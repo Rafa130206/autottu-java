@@ -1,0 +1,126 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragmentos :: cabecalho('Solicitações de Test Ride')}" />
+  <body>
+    <div th:replace="~{fragmentos :: navegacao(${usuarioLogado})}"></div>
+
+    <div class="container mt-4">
+      <div th:replace="~{fragmentos :: saudacoes(${usuarioLogado})}" />
+
+      <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+          <h1>Solicitações de Test Ride</h1>
+          <a href="/testrides/novo" class="btn btn-primary">Nova Solicitação</a>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div
+            th:if="${msgSucesso}"
+            class="alert alert-success"
+            th:text="${msgSucesso}"
+          ></div>
+          <div
+            th:if="${msgErro}"
+            class="alert alert-danger"
+            th:text="${msgErro}"
+          ></div>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Moto</th>
+                <th>Solicitante</th>
+                <th>Data</th>
+                <th>Status</th>
+                <th>Data Limite</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="ride : ${testrides}">
+                <td th:text="${ride.id}"></td>
+                <td
+                  th:text="${ride.moto.modelo + ' - ' + ride.moto.placa}"
+                ></td>
+                <td th:text="${ride.usuario.nome}"></td>
+                <td th:text="${ride.dataDesejada}"></td>
+                <td th:text="${ride.status}"></td>
+                <td th:text="${ride.dataLimite}"></td>
+                <td>
+                  <div
+                    th:if="${usuarioLogado != null and usuarioLogado.perfil.name() == 'ADMIN'}"
+                  >
+                    <form
+                      th:if="${ride.status.name() == 'PENDENTE'}"
+                      th:action="@{/testrides/{id}/aprovar(id=${ride.id})}"
+                      method="post"
+                      style="display: inline"
+                    >
+                      <input
+                        type="hidden"
+                        name="_csrf"
+                        th:value="${_csrf != null ? _csrf.token : ''}"
+                      />
+                      <button type="submit" class="btn btn-success btn-sm">
+                        Aprovar
+                      </button>
+                    </form>
+                    <form
+                      th:if="${ride.status.name() == 'PENDENTE'}"
+                      th:action="@{/testrides/{id}/rejeitar(id=${ride.id})}"
+                      method="post"
+                      style="display: inline"
+                    >
+                      <input
+                        type="hidden"
+                        name="_csrf"
+                        th:value="${_csrf != null ? _csrf.token : ''}"
+                      />
+                      <button type="submit" class="btn btn-warning btn-sm">
+                        Rejeitar
+                      </button>
+                    </form>
+                    <form
+                      th:action="@{/testrides/{id}/delete(id=${ride.id})}"
+                      method="post"
+                      style="display: inline"
+                    >
+                      <input
+                        type="hidden"
+                        name="_csrf"
+                        th:value="${_csrf != null ? _csrf.token : ''}"
+                      />
+                      <button
+                        type="submit"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Remover solicitação?')"
+                      >
+                        Excluir
+                      </button>
+                    </form>
+                  </div>
+                  <div
+                    th:if="${usuarioLogado == null || usuarioLogado.perfil.name() != 'ADMIN'}"
+                  >
+                    <span class="text-muted"
+                      >Somente administradores gerenciam o status.</span
+                    >
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

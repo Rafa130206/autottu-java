@@ -1,0 +1,112 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragmentos :: cabecalho(${pageTitle})}" />
+  <body>
+    <div th:replace="~{fragmentos :: navegacao(${usuarioLogado})}"></div>
+
+    <div class="container mt-4">
+      <div th:replace="~{fragmentos :: saudacoes(${usuarioLogado})}" />
+
+      <div class="row">
+        <div class="col-12">
+          <h1 th:text="${pageTitle}">Agendar Manutenção</h1>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div
+            th:if="${msgErro}"
+            class="alert alert-danger"
+            th:text="${msgErro}"
+          ></div>
+
+          <form
+            th:object="${manutencao}"
+            th:action="@{/manutencoes}"
+            method="post"
+          >
+            <div class="mb-3">
+              <label for="moto" class="form-label">Moto</label>
+              <select class="form-select" name="motoId" id="moto">
+                <option value="">Selecione uma moto</option>
+                <option
+                  th:each="moto : ${motos}"
+                  th:value="${moto.id}"
+                  th:selected="${manutencao.moto != null and manutencao.moto.id == moto.id}"
+                  th:text="${moto.modelo + ' - ' + moto.placa}"
+                ></option>
+              </select>
+              <div th:if="${#fields.hasErrors('moto')}" class="text-danger">
+                <span th:errors="*{moto}"></span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="quilometragemAtual" class="form-label"
+                >Quilometragem Atual</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                th:field="*{quilometragemAtual}"
+                id="quilometragemAtual"
+                placeholder="Km atual"
+              />
+              <div
+                th:if="${#fields.hasErrors('quilometragemAtual')}"
+                class="text-danger"
+              >
+                <span th:errors="*{quilometragemAtual}"></span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="dataAgendada" class="form-label"
+                >Data da Manutenção</label
+              >
+              <input
+                type="date"
+                class="form-control"
+                th:field="*{dataAgendada}"
+                id="dataAgendada"
+              />
+              <div
+                th:if="${#fields.hasErrors('dataAgendada')}"
+                class="text-danger"
+              >
+                <span th:errors="*{dataAgendada}"></span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="observacoes" class="form-label">Observações</label>
+              <textarea
+                class="form-control"
+                th:field="*{observacoes}"
+                id="observacoes"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="mb-3">
+              <input
+                type="hidden"
+                name="_csrf"
+                th:value="${_csrf != null ? _csrf.token : ''}"
+              />
+              <button type="submit" class="btn btn-primary">Agendar</button>
+              <a href="/manutencoes" class="btn btn-secondary">Cancelar</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

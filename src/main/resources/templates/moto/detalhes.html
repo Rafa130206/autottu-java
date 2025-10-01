@@ -1,0 +1,120 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragmentos :: cabecalho('Detalhes da Moto')}" />
+  <body>
+    <div th:replace="~{fragmentos :: navegacao(${usuario})}"></div>
+
+    <div class="container">
+      <div th:replace="~{fragmentos :: saudacoes(${usuario})}" />
+
+      <div class="row">
+        <h1>Detalhes da Moto</h1>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <table class="table table-hover">
+            <tr>
+              <td><strong>ID:</strong></td>
+              <td><span th:text="${moto.id}"></span></td>
+            </tr>
+            <tr>
+              <td><strong>Placa:</strong></td>
+              <td><span th:text="${moto.placa}"></span></td>
+            </tr>
+            <tr>
+              <td><strong>Modelo:</strong></td>
+              <td><span th:text="${moto.modelo}"></span></td>
+            </tr>
+            <tr>
+              <td><strong>Marca:</strong></td>
+              <td><span th:text="${moto.marca}"></span></td>
+            </tr>
+            <tr>
+              <td><strong>Status:</strong></td>
+              <td>
+                <span
+                  th:if="${moto.status == T(br.com.fiap.autottu.model.EnumStatusMoto).DISPONIVEL}"
+                  class="badge bg-success"
+                  >Disponível</span
+                >
+                <span
+                  th:if="${moto.status == T(br.com.fiap.autottu.model.EnumStatusMoto).OCUPADA}"
+                  class="badge bg-warning"
+                  >Ocupada</span
+                >
+                <span
+                  th:if="${moto.status == T(br.com.fiap.autottu.model.EnumStatusMoto).MANUTENCAO}"
+                  class="badge bg-info"
+                  >Manutenção</span
+                >
+                <span
+                  th:if="${moto.status == T(br.com.fiap.autottu.model.EnumStatusMoto).INDISPONIVEL}"
+                  class="badge bg-danger"
+                  >Indisponível</span
+                >
+              </td>
+            </tr>
+            <tr th:if="${moto.urlFoto != null and moto.urlFoto != ''}">
+              <td><strong>Foto:</strong></td>
+              <td>
+                <img
+                  th:src="${moto.urlFoto}"
+                  alt="Foto da moto"
+                  style="max-width: 200px; max-height: 150px"
+                  class="img-thumbnail"
+                />
+              </td>
+            </tr>
+            <tr th:if="${moto.urlFoto != null and moto.urlFoto != ''}">
+              <td><strong>URL da Foto:</strong></td>
+              <td>
+                <a
+                  th:href="${moto.urlFoto}"
+                  target="_blank"
+                  th:text="${moto.urlFoto}"
+                ></a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <a
+            th:href="@{/motos/{id}/editar(id=${moto.id})}"
+            class="btn btn-warning"
+            >Editar Moto</a
+          >
+          <form
+            th:action="@{/motos/{id}/delete(id=${moto.id})}"
+            method="post"
+            style="display: inline"
+          >
+            <input
+              type="hidden"
+              name="_csrf"
+              th:value="${_csrf != null ? _csrf.token : ''}"
+            />
+            <button
+              type="submit"
+              class="btn btn-danger"
+              onclick="return confirm('Tem certeza que deseja excluir esta moto?')"
+            >
+              Excluir Moto
+            </button>
+          </form>
+          <a href="/motos" class="btn btn-secondary">Voltar para Lista</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

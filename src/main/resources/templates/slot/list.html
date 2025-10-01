@@ -1,0 +1,83 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragmentos :: cabecalho('Lista de Slots')}" />
+  <body>
+    <div th:replace="~{fragmentos :: navegacao(${usuarioLogado})}"></div>
+
+    <div class="container">
+      <div th:replace="~{fragmentos :: saudacoes(${usuarioLogado})}" />
+
+      <div class="row">
+        <h1>Lista de Slots</h1>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <a href="/slots/novo" class="btn btn-primary mb-3">Novo Slot</a>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Ocupado</th>
+                <th>Moto</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="slot : ${slots}">
+                <td th:text="${slot.id}"></td>
+                <td>
+                  <span th:if="${slot.ocupado}"> Ocupado </span>
+                  <span th:if="${!slot.ocupado}"> Livre </span>
+                </td>
+                <td>
+                  <span
+                    th:if="${slot.moto != null}"
+                    th:text="${slot.moto.modelo + ' - ' + slot.moto.placa}"
+                  ></span>
+                  <span th:if="${slot.moto == null}">Sem moto vinculada</span>
+                </td>
+                <td>
+                  <a
+                    th:href="@{/slots/{id}/editar(id=${slot.id})}"
+                    class="btn btn-warning btn-sm"
+                    >Editar</a
+                  >
+                  <form
+                    th:action="@{/slots/{id}/delete(id=${slot.id})}"
+                    method="post"
+                    style="display: inline"
+                  >
+                    <input
+                      type="hidden"
+                      name="_csrf"
+                      th:value="${_csrf != null ? _csrf.token : ''}"
+                    />
+                    <button
+                      type="submit"
+                      class="btn btn-danger btn-sm"
+                      onclick="return confirm('Deseja excluir este slot?')"
+                    >
+                      Excluir
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

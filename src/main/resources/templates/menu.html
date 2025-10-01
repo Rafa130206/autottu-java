@@ -1,0 +1,124 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragmentos :: cabecalho(${pageTitle})}" />
+  <body>
+    <div th:replace="~{fragmentos :: navegacao(${usuarioLogado})}"></div>
+
+    <main class="container py-5">
+      <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+          <h1 class="display-6">
+            <span
+              th:text="${usuarioLogado != null ? 'Bem-vindo, ' + usuarioLogado.nome + '!' : 'Bem-vindo!'}"
+            ></span>
+          </h1>
+          <div class="d-flex gap-2" th:if="${usuarioLogado != null}">
+            <a href="/perfil" class="btn btn-outline-primary btn-sm"
+              >Meu Perfil</a
+            >
+            <form th:action="@{/logout}" method="post">
+              <input
+                type="hidden"
+                name="_csrf"
+                th:value="${_csrf != null ? _csrf.token : ''}"
+              />
+              <button type="submit" class="btn btn-outline-danger btn-sm">
+                Sair
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-12 col-md-6 col-xl-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Motos</h5>
+              <p class="card-text">
+                Cadastre e gerencie o inventário de motos disponíveis.
+              </p>
+              <a href="/motos" class="btn btn-primary">Ir para Motos</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Check-ins</h5>
+              <p class="card-text">
+                Controle entradas e saídas, fotos e dados das motos nos slots.
+              </p>
+              <a href="/checkins" class="btn btn-primary">Ir para Check-ins</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Manutenções</h5>
+              <p class="card-text">
+                Agende revisões, acompanhe status e histórico das motos.
+              </p>
+              <a href="/manutencoes" class="btn btn-primary"
+                >Ir para Manutenções</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Test Rides</h5>
+              <p class="card-text">
+                Aprove e acompanhe solicitações de test ride com feedback
+                detalhado.
+              </p>
+              <a href="/testrides" class="btn btn-primary"
+                >Ir para Test Rides</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Slots</h5>
+              <p class="card-text">
+                Organize e monitore vagas disponíveis, ocupadas ou reservadas.
+              </p>
+              <a href="/slots" class="btn btn-primary">Ir para Slots</a>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-12 col-md-6 col-xl-4"
+          th:if="${usuarioLogado != null and usuarioLogado.perfil != null and usuarioLogado.perfil.name() == 'ADMIN'}"
+        >
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Integrantes</h5>
+              <p class="card-text">
+                Acesse informações da equipe e mantenha os contatos atualizados.
+              </p>
+              <a href="/integrantes" class="btn btn-primary"
+                >Ir para Integrantes</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragmentos :: cabecalho('Detalhes do Test Ride')}" />
+  <body>
+    <div th:replace="~{fragmentos :: navegacao(${usuarioLogado})}"></div>
+
+    <div class="container mt-4">
+      <div th:replace="~{fragmentos :: saudacoes(${usuarioLogado})}" />
+
+      <div class="row">
+        <div class="col-12">
+          <h1>Detalhes do Test Ride</h1>
+          <table class="table table-striped">
+            <tr>
+              <th>ID</th>
+              <td th:text="${testride.id}"></td>
+            </tr>
+            <tr>
+              <th>Moto</th>
+              <td
+                th:text="${testride.moto.modelo + ' - ' + testride.moto.placa}"
+              ></td>
+            </tr>
+            <tr>
+              <th>Solicitante</th>
+              <td th:text="${testride.usuario.nome}"></td>
+            </tr>
+            <tr>
+              <th>Propósito</th>
+              <td th:text="${testride.proposito}"></td>
+            </tr>
+            <tr>
+              <th>Data Desejada</th>
+              <td th:text="${testride.dataDesejada}"></td>
+            </tr>
+            <tr>
+              <th>Data Limite</th>
+              <td th:text="${testride.dataLimite}"></td>
+            </tr>
+            <tr>
+              <th>Status</th>
+              <td th:text="${testride.status}"></td>
+            </tr>
+            <tr>
+              <th>Observações</th>
+              <td th:text="${testride.observacoes}"></td>
+            </tr>
+          </table>
+          <a href="/testrides" class="btn btn-secondary">Voltar</a>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
