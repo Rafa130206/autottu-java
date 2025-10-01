@@ -66,6 +66,61 @@ $ mvn spring-boot:run
 > Operações de aprovação/rejeição/conclusão de Test Ride exigem perfil ADMIN.
 > A página de integrantes (`/integrantes`) também fica visível apenas para administradores.
 
+### Detalhamento CRUD
+
+#### Motos (`/motos`)
+
+| Método | Caminho              | Descrição                     |
+| ------ | -------------------- | ----------------------------- |
+| GET    | `/motos`             | Lista motos cadastradas.      |
+| GET    | `/motos/novo`        | Formulário de criação.        |
+| POST   | `/motos`             | Persiste nova moto.           |
+| GET    | `/motos/{id}`        | Mostra detalhes da moto.      |
+| GET    | `/motos/{id}/editar` | Formulário de edição.         |
+| POST   | `/motos/{id}`        | Atualiza (usa `_method=put`). |
+| POST   | `/motos/{id}/delete` | Exclui.                       |
+
+#### Slots (`/slots`)
+
+| Método | Caminho              | Descrição                                             |
+| ------ | -------------------- | ----------------------------------------------------- |
+| GET    | `/slots`             | Lista slots e seu status.                             |
+| GET    | `/slots/novo`        | Formulário para criar slot.                           |
+| POST   | `/slots`             | Cria slot (verifica se a moto já não está vinculada). |
+| GET    | `/slots/{id}/editar` | Formulário de edição.                                 |
+| POST   | `/slots/{id}`        | Atualiza relacionamento moto/ocupação.                |
+| POST   | `/slots/{id}/delete` | Desvincula moto e remove slot.                        |
+
+#### Check-ins (`/checkins`)
+
+| Método | Caminho                 | Descrição                                              |
+| ------ | ----------------------- | ------------------------------------------------------ |
+| GET    | `/checkins`             | Lista check-ins registrados.                           |
+| GET    | `/checkins/novo`        | Formulário de criação.                                 |
+| POST   | `/checkins`             | Cria check-in (DTO `CheckinRequest`).                  |
+| GET    | `/checkins/{id}/editar` | Formulário com dados existentes.                       |
+| POST   | `/checkins/{id}`        | Atualiza (`_method=put`) ou exclui (`_method=delete`). |
+
+#### Manutenções (`/manutencoes`)
+
+| Método | Caminho                    | Descrição                                    |
+| ------ | -------------------------- | -------------------------------------------- |
+| GET    | `/manutencoes`             | Lista agendas existentes.                    |
+| GET    | `/manutencoes/novo`        | Formulário para agendamento.                 |
+| POST   | `/manutencoes`             | Agenda manutenção (valida moto selecionada). |
+| POST   | `/manutencoes/{id}/delete` | Cancela manutenção.                          |
+
+#### Test Rides (`/testrides`)
+
+| Método | Caminho                    | Descrição                                            | Perfil      |
+| ------ | -------------------------- | ---------------------------------------------------- | ----------- |
+| GET    | `/testrides`               | Lista solicitações (botões condicionais para ADMIN). | Autenticado |
+| GET    | `/testrides/novo`          | Formulário de solicitação.                           | Autenticado |
+| POST   | `/testrides`               | Cria solicitação (usa IDs de moto/usuário).          | Autenticado |
+| POST   | `/testrides/{id}/aprovar`  | Aprova solicitação pendente.                         | ADMIN       |
+| POST   | `/testrides/{id}/rejeitar` | Rejeita solicitação pendente.                        | ADMIN       |
+| POST   | `/testrides/{id}/delete`   | Remove solicitação.                                  | ADMIN       |
+
 ## 🗂 Estrutura
 
 ```
