@@ -64,6 +64,7 @@ $ mvn spring-boot:run
 - **Test Rides**: `/testrides`, `/testrides/novo`
 
 > Operações de aprovação/rejeição/conclusão de Test Ride exigem perfil ADMIN.
+> A página de integrantes (`/integrantes`) também fica visível apenas para administradores.
 
 ## 🗂 Estrutura
 
