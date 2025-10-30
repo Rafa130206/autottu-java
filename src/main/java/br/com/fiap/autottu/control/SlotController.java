@@ -19,6 +19,7 @@ import br.com.fiap.autottu.model.Moto;
 import br.com.fiap.autottu.model.Slot;
 import br.com.fiap.autottu.repository.MotoRepository;
 import br.com.fiap.autottu.repository.SlotRepository;
+import br.com.fiap.autottu.service.CachingService;
 import jakarta.validation.Valid;
 
 @Controller
@@ -30,13 +31,16 @@ public class SlotController {
 
     @Autowired
     private MotoRepository motoRepository;
+    
+    @Autowired
+    private CachingService cache;
 
 	// LISTA: GET /slots -> "slot/list"
     @GetMapping
     public ModelAndView listar() {
         ModelAndView mv = new ModelAndView("slot/list");
         mv.addObject("pageTitle", "Slots");
-        mv.addObject("slots", slotRepository.findAll());
+        mv.addObject("slots", cache.findAllSlots());
         return mv;
     }
 
@@ -69,6 +73,7 @@ public class SlotController {
         slot.setOcupado(Boolean.TRUE.equals(slot.getOcupado()) || motoSelecionada != null);
 
         slotRepository.save(slot);
+        cache.removerCacheSlot();
         return new ModelAndView("redirect:/slots");
     }
 

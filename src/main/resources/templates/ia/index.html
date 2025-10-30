@@ -1,0 +1,254 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragmentos :: cabecalho(${pageTitle})}" />
+  <body>
+    <div th:replace="~{fragmentos :: navegacao(${usuarioLogado})}"></div>
+
+    <div class="container mt-4">
+      <div th:replace="~{fragmentos :: saudacoes(${usuarioLogado})}" />
+
+      <h1 class="display-6 mb-4">
+        <i class="bi bi-robot"></i>
+        Assistente Inteligente AutoTTU
+      </h1>
+      <p class="lead">
+        Use o poder da Inteligência Artificial para tomar decisões melhores
+        sobre motos!
+      </p>
+
+      <!-- Formulário Principal -->
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          <h5 class="card-title">
+            <i class="bi bi-chat-dots text-primary"></i>
+            Faça sua pergunta
+          </h5>
+          <p class="text-muted">
+            Pergunte qualquer coisa sobre motos, manutenção, recomendações,
+            comparações, etc.
+          </p>
+
+          <form th:action="@{/ia}" method="post">
+            <div class="mb-3">
+              <label for="pergunta" class="form-label">Sua pergunta:</label>
+              <textarea
+                class="form-control"
+                id="pergunta"
+                name="pergunta"
+                rows="4"
+                placeholder="Ex: Qual é a melhor moto para iniciantes? ou Compare Honda CB 500X com Yamaha MT-03"
+                required
+                th:text="${pergunta}"
+              ></textarea>
+              <div class="form-text">
+                💡 Dica: Clique em uma das sugestões abaixo para preencher
+                automaticamente
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i class="bi bi-send"></i> Perguntar à IA
+            </button>
+            <a href="/menu" class="btn btn-secondary">
+              <i class="bi bi-arrow-left"></i> Voltar ao Menu
+            </a>
+          </form>
+        </div>
+      </div>
+
+      <!-- Resposta da IA -->
+      <div class="card shadow mb-4" th:if="${resposta}">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0"><i class="bi bi-robot"></i> Resposta da IA</h5>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-light border" role="alert">
+            <pre
+              style="white-space: pre-wrap; font-family: inherit; margin: 0"
+              th:text="${resposta}"
+            ></pre>
+          </div>
+          <button
+            class="btn btn-sm btn-outline-primary"
+            onclick="document.getElementById('pergunta').value=''; window.scrollTo(0,0);"
+          >
+            <i class="bi bi-arrow-up"></i> Nova Pergunta
+          </button>
+        </div>
+      </div>
+
+      <hr class="my-4" />
+
+      <h3 class="mb-3">
+        <i class="bi bi-lightbulb"></i>
+        Sugestões de Perguntas
+      </h3>
+      <p class="text-muted mb-4">
+        Clique em qualquer card para preencher o campo acima com a pergunta
+        sugerida
+      </p>
+
+      <!-- Grid de Sugestões -->
+      <div class="row g-4">
+        <!-- Assistente Virtual -->
+        <div class="col-12 col-md-6 col-xl-4">
+          <div
+            class="card h-100 shadow-sm border-primary cursor-pointer"
+            onclick="preencherPergunta('Qual é a diferença entre uma moto naked e uma sport touring? Inclua exemplos de modelos populares no Brasil.')"
+            style="cursor: pointer"
+          >
+            <div class="card-body">
+              <h5 class="card-title text-primary">
+                <i class="bi bi-chat-dots"></i>
+                Dúvidas Gerais
+              </h5>
+              <p class="card-text">
+                <strong>Exemplo:</strong> Qual é a diferença entre uma moto
+                naked e uma sport touring?
+              </p>
+              <small class="text-muted">Clique para usar esta pergunta</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recomendação de Motos -->
+        <div class="col-12 col-md-6 col-xl-4">
+          <div
+            class="card h-100 shadow-sm border-success cursor-pointer"
+            onclick="preencherPergunta('Sou iniciante e quero comprar minha primeira moto. Pretendo usar principalmente na cidade, mas também fazer viagens ocasionais. Qual moto você recomenda? Considere meu perfil de iniciante e um orçamento médio.')"
+            style="cursor: pointer"
+          >
+            <div class="card-body">
+              <h5 class="card-title text-success">
+                <i class="bi bi-star"></i>
+                Recomendação Personalizada
+              </h5>
+              <p class="card-text">
+                <strong>Exemplo:</strong> Sou iniciante e quero uma moto para
+                cidade e viagens. Qual você recomenda?
+              </p>
+              <small class="text-muted">Clique para usar esta pergunta</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Análise de Manutenção -->
+        <div class="col-12 col-md-6 col-xl-4">
+          <div
+            class="card h-100 shadow-sm border-warning cursor-pointer"
+            onclick="preencherPergunta('Tenho uma Honda CB 500X com 15.000 km rodados. A última manutenção foi há 3 meses e 2.500 km atrás. Quais itens provavelmente precisarão de manutenção em breve? Dê uma estimativa de custos e urgência.')"
+            style="cursor: pointer"
+          >
+            <div class="card-body">
+              <h5 class="card-title text-warning">
+                <i class="bi bi-tools"></i>
+                Análise de Manutenção
+              </h5>
+              <p class="card-text">
+                <strong>Exemplo:</strong> Minha moto tem 15.000 km. O que
+                preciso fazer de manutenção?
+              </p>
+              <small class="text-muted">Clique para usar esta pergunta</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assistente Test Ride -->
+        <div class="col-12 col-md-6 col-xl-4">
+          <div
+            class="card h-100 shadow-sm border-info cursor-pointer"
+            onclick="preencherPergunta('Vou fazer um test ride de uma Yamaha MT-03. Sou piloto intermediário. O que devo observar durante o test ride? Dê um checklist completo de segurança e aspectos técnicos a testar.')"
+            style="cursor: pointer"
+          >
+            <div class="card-body">
+              <h5 class="card-title text-info">
+                <i class="bi bi-bicycle"></i>
+                Guia Test Ride
+              </h5>
+              <p class="card-text">
+                <strong>Exemplo:</strong> Vou fazer test ride de uma Yamaha
+                MT-03. O que observar?
+              </p>
+              <small class="text-muted">Clique para usar esta pergunta</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comparador de Motos -->
+        <div class="col-12 col-md-6 col-xl-4">
+          <div
+            class="card h-100 shadow-sm border-danger cursor-pointer"
+            onclick="preencherPergunta('Compare Honda CB 500X, Yamaha MT-03 e Kawasaki Z400. Inclua ficha técnica, prós e contras de cada uma, comparação de desempenho, custo-benefício e recomendação por perfil de usuário.')"
+            style="cursor: pointer"
+          >
+            <div class="card-body">
+              <h5 class="card-title text-danger">
+                <i class="bi bi-graph-up-arrow"></i>
+                Comparador
+              </h5>
+              <p class="card-text">
+                <strong>Exemplo:</strong> Compare Honda CB 500X vs Yamaha MT-03
+                vs Kawasaki Z400
+              </p>
+              <small class="text-muted">Clique para usar esta pergunta</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gerador de Descrição -->
+        <div class="col-12 col-md-6 col-xl-4">
+          <div
+            class="card h-100 shadow-sm border-secondary cursor-pointer"
+            onclick="preencherPergunta('Crie uma descrição comercial atrativa e profissional para uma Honda CB 1000R Black Edition 2024, seminova. Inclua características principais, público-alvo e diferenciais. Mantenha um tom profissional mas acessível, com no máximo 150 palavras.')"
+            style="cursor: pointer"
+          >
+            <div class="card-body">
+              <h5 class="card-title text-secondary">
+                <i class="bi bi-file-text"></i>
+                Descrição Comercial
+              </h5>
+              <p class="card-text">
+                <strong>Exemplo:</strong> Crie uma descrição para Honda CB 1000R
+                Black Edition seminova
+              </p>
+              <small class="text-muted">Clique para usar esta pergunta</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aviso sobre API Key -->
+      <div class="alert alert-info mt-5" role="alert">
+        <h5 class="alert-heading">
+          <i class="bi bi-info-circle"></i> Configuração
+        </h5>
+        <p class="mb-0">
+          Para usar o Assistente IA, certifique-se de ter configurado uma chave
+          API válida da OpenAI no arquivo
+          <code>application.properties</code>. Obtenha sua chave em:
+          <a
+            href="https://platform.openai.com/api-keys"
+            target="_blank"
+            class="alert-link"
+          >
+            https://platform.openai.com/api-keys
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      function preencherPergunta(texto) {
+        document.getElementById("pergunta").value = texto;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        document.getElementById("pergunta").focus();
+      }
+    </script>
+  </body>
+</html>

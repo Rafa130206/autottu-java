@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.fiap.autottu.model.EnumStatusMoto;
 import br.com.fiap.autottu.model.Moto;
 import br.com.fiap.autottu.repository.MotoRepository;
+import br.com.fiap.autottu.service.CachingService;
 import jakarta.validation.Valid;
 
 @Controller
@@ -24,12 +25,15 @@ public class MotoController {
 	@Autowired
 	private MotoRepository repM;
 	
+	@Autowired
+	private CachingService cache;
+	
 	// LISTA: GET /motos -> "moto/list"
 	@GetMapping
 	public ModelAndView list() {
 		ModelAndView mv = new ModelAndView("moto/list");
 		mv.addObject("pageTitle", "Motos");
-		mv.addObject("motos", repM.findAll());
+		mv.addObject("motos", cache.findAllMotos());
 		return mv;
 	}
 
@@ -46,7 +50,7 @@ public class MotoController {
 	// EDITAR: GET /motos/{id}/editar -> "moto/form"
 	@GetMapping("/{id}/editar")
 	public ModelAndView editar(@PathVariable Integer id) {
-		Optional<Moto> op = repM.findById(id);
+		Optional<Moto> op = cache.findByIdMoto(id);
 		
 		if(op.isPresent()) {
 			ModelAndView mv = new ModelAndView("moto/form");
@@ -72,6 +76,7 @@ public class MotoController {
 			return mv;
 		}
 		repM.save(moto);
+		cache.removerCacheMoto();
 		return new ModelAndView("redirect:/motos");
 	}
 
@@ -87,11 +92,12 @@ public class MotoController {
 			mv.addObject("lista_status", EnumStatusMoto.values());
 			return mv;
 		}
-		Optional<Moto> op = repM.findById(id);
+		Optional<Moto> op = cache.findByIdMoto(id);
 		if(op.isPresent()) {
 			Moto motoAtualizada = op.get();
 			motoAtualizada.transferirMoto(moto);
 			repM.save(motoAtualizada);
+			cache.removerCacheMoto();
 		}
 		return new ModelAndView("redirect:/motos");
 	}
@@ -100,13 +106,14 @@ public class MotoController {
 	@PostMapping("/{id}/delete")
 	public ModelAndView excluir(@PathVariable Integer id) {
 		repM.deleteById(id);
+		cache.removerCacheMoto();
 		return new ModelAndView("redirect:/motos");
 	}
 
 	// DETALHES: GET /motos/{id} -> "moto/detalhes"
 	@GetMapping("/{id}")
 	public ModelAndView exibirDetalhes(@PathVariable Integer id) {
-		Optional<Moto> op = repM.findById(id);
+		Optional<Moto> op = cache.findByIdMoto(id);
 		
 		if(op.isPresent()) {
 			ModelAndView mv = new ModelAndView("moto/detalhes");

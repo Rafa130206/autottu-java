@@ -125,6 +125,28 @@
           </div>
         </div>
 
+        <!-- Spring AI - Assistente Inteligente -->
+        <div class="col-12 col-md-6 col-xl-4">
+          <div class="card h-100 shadow-sm border-primary">
+            <div class="card-body">
+              <h5 class="card-title text-primary">
+                <i class="bi bi-robot"></i>
+                <span th:text="#{menu.ia}">Assistente IA</span>
+              </h5>
+              <p class="card-text" th:text="#{menu.ia.descricao}">
+                Use inteligência artificial para recomendações, análises e
+                assistência sobre motos.
+              </p>
+              <a
+                href="/ia"
+                class="btn btn-primary"
+                th:text="#{botao_ir_para} + ' ' + #{menu.ia}"
+                >Ir para Assistente IA</a
+              >
+            </div>
+          </div>
+        </div>
+
         <div
           class="col-12 col-md-6 col-xl-4"
           th:if="${usuarioLogado != null and usuarioLogado.perfil != null and usuarioLogado.perfil.name() == 'ADMIN'}"

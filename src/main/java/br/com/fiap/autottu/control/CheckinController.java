@@ -21,6 +21,7 @@ import br.com.fiap.autottu.repository.CheckinRepository;
 import br.com.fiap.autottu.repository.MotoRepository;
 import br.com.fiap.autottu.repository.SlotRepository;
 import br.com.fiap.autottu.repository.UsuarioRepository;
+import br.com.fiap.autottu.service.CachingService;
 import jakarta.validation.Valid;
 
 @Controller
@@ -38,6 +39,9 @@ public class CheckinController {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private CachingService cache;
 
 	@Autowired(required = false)  // required=false para funcionar no modo mock
 	private br.com.fiap.autottu.messaging.producer.KafkaProdutor kafkaProdutor;
@@ -49,7 +53,7 @@ public class CheckinController {
 	@GetMapping
 	public String list(Model model) {
 		model.addAttribute("pageTitle", "Check-ins");
-		model.addAttribute("checkins", checkinRepository.findAll());
+		model.addAttribute("checkins", cache.findAllCheckins());
 		return "checkin/list";
 	}
 
@@ -101,6 +105,7 @@ public class CheckinController {
 		preencherDados(checkin, req);
 		checkin.setTimestamp(new java.util.Date());
 		checkinRepository.save(checkin);
+		cache.removerCacheCheckin();
 		
 		// Enviar evento para Kafka
 		enviarEventoKafka(checkin, "CHECKIN_CRIADO");
@@ -124,24 +129,26 @@ public class CheckinController {
 				carregarListas(model);
 				return "checkin/form";
 			}
-			Optional<Checkin> op = checkinRepository.findById(id);
+			Optional<Checkin> op = cache.findByIdCheckin(id);
 			if(op.isPresent()) {
 				Checkin checkin = op.get();
 				preencherDados(checkin, req);
 				checkinRepository.save(checkin);
+				cache.removerCacheCheckin();
 				
 				// Enviar evento para Kafka
 				enviarEventoKafka(checkin, "CHECKIN_ATUALIZADO");
 			}
 			ra.addFlashAttribute("msgSucesso", "Check-in atualizado!");
 		} else if ("delete".equalsIgnoreCase(method)) {
-			Optional<Checkin> op = checkinRepository.findById(id);
+			Optional<Checkin> op = cache.findByIdCheckin(id);
 			if(op.isPresent()) {
 				Checkin checkin = op.get();
 				// Enviar evento para Kafka antes de excluir
 				enviarEventoKafka(checkin, "CHECKIN_REMOVIDO");
 			}
 			checkinRepository.deleteById(id);
+			cache.removerCacheCheckin();
 			ra.addFlashAttribute("msgSucesso", "Check-in excluído!");
 		}
 		return "redirect:/checkins";
