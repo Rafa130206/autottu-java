@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.fiap.autottu.api.request.CheckinRequest;
+import br.com.fiap.autottu.messaging.dto.CheckinEventoDTO;
 import br.com.fiap.autottu.model.Checkin;
 import br.com.fiap.autottu.repository.CheckinRepository;
 import br.com.fiap.autottu.repository.MotoRepository;
@@ -38,6 +39,13 @@ public class CheckinController {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
+	@Autowired(required = false)  // required=false para funcionar no modo mock
+	private br.com.fiap.autottu.messaging.producer.KafkaProdutor kafkaProdutor;
+
+	@Autowired(required = false)  // required=false para funcionar no modo mock
+	private br.com.fiap.autottu.messaging.producer.KafkaProdutorMock kafkaProdutorMock;
+
+	// LISTA: GET /checkins -> "checkin/list"
 	@GetMapping
 	public String list(Model model) {
 		model.addAttribute("pageTitle", "Check-ins");
@@ -45,14 +53,16 @@ public class CheckinController {
 		return "checkin/list";
 	}
 
+	// NOVO: GET /checkins/novo -> "checkin/form"
 	@GetMapping("/novo")
 	public String novo(Model model) {
 		model.addAttribute("pageTitle", "Novo Check-in");
-		model.addAttribute("checkin", new CheckinRequest(null, null, null, false, null, null));
+		model.addAttribute("checkin", CheckinRequest.vazio());
 		carregarListas(model);
 		return "checkin/form";
 	}
 
+	// EDITAR: GET /checkins/{id}/editar -> "checkin/form"
 	@GetMapping("/{id}/editar")
 	public String editar(@PathVariable Integer id, Model model, RedirectAttributes ra) {
 		Optional<Checkin> op = checkinRepository.findById(id);
@@ -76,6 +86,7 @@ public class CheckinController {
 		return "redirect:/checkins";
 	}
 
+	// CRIAR: POST /checkins -> redireciona para /checkins
 	@PostMapping
 	public String criar(@Valid @ModelAttribute("checkin") CheckinRequest req,
 						BindingResult binding,
@@ -90,10 +101,15 @@ public class CheckinController {
 		preencherDados(checkin, req);
 		checkin.setTimestamp(new java.util.Date());
 		checkinRepository.save(checkin);
+		
+		// Enviar evento para Kafka
+		enviarEventoKafka(checkin, "CHECKIN_CRIADO");
+		
 		ra.addFlashAttribute("msgSucesso", "Check-in realizado! ID: " + checkin.getId());
 		return "redirect:/checkins";
 	}
 
+	// ATUALIZAR/EXCLUIR: POST /checkins/{id} com _method=put/delete -> redireciona para /checkins
 	@PostMapping("/{id}")
 	public String atualizarOuExcluir(@PathVariable Integer id,
 									 @RequestParam(value = "_method", required = false) String method,
@@ -113,9 +129,18 @@ public class CheckinController {
 				Checkin checkin = op.get();
 				preencherDados(checkin, req);
 				checkinRepository.save(checkin);
+				
+				// Enviar evento para Kafka
+				enviarEventoKafka(checkin, "CHECKIN_ATUALIZADO");
 			}
 			ra.addFlashAttribute("msgSucesso", "Check-in atualizado!");
 		} else if ("delete".equalsIgnoreCase(method)) {
+			Optional<Checkin> op = checkinRepository.findById(id);
+			if(op.isPresent()) {
+				Checkin checkin = op.get();
+				// Enviar evento para Kafka antes de excluir
+				enviarEventoKafka(checkin, "CHECKIN_REMOVIDO");
+			}
 			checkinRepository.deleteById(id);
 			ra.addFlashAttribute("msgSucesso", "Check-in excluído!");
 		}
@@ -128,6 +153,7 @@ public class CheckinController {
 		model.addAttribute("usuarios", usuarioRepository.findAll());
 	}
 
+	// Preenche os dados do checkin com os dados do request
 	private void preencherDados(Checkin checkin, CheckinRequest req) {
 		if(req.motoId() != null) {
 			motoRepository.findById(req.motoId()).ifPresent(checkin::setMoto);
@@ -141,5 +167,27 @@ public class CheckinController {
 		checkin.setViolada(req.violada());
 		checkin.setObservacao(req.observacao());
 		checkin.setImagens(req.imagens());
+	}
+
+	// Envia evento de Check-in para Kafka
+	private void enviarEventoKafka(Checkin checkin, String tipoEvento) {
+		CheckinEventoDTO evento = new CheckinEventoDTO(
+			checkin.getId() != null ? checkin.getId().longValue() : null,
+			tipoEvento,
+			checkin.getMoto() != null ? checkin.getMoto().getId().longValue() : null,
+			checkin.getMoto() != null ? checkin.getMoto().getModelo() : "N/A",
+			checkin.getUsuario() != null ? checkin.getUsuario().getId().longValue() : null,
+			checkin.getUsuario() != null ? checkin.getUsuario().getNome() : "N/A",
+			checkin.getSlot() != null ? "Slot #" + checkin.getSlot().getId() : "N/A",
+			checkin.getTimestamp(),
+			checkin.getObservacao()
+		);
+
+		// Enviar para o produtor correto (real ou mock)
+		if (kafkaProdutor != null) {
+			kafkaProdutor.enviarEventoCheckin(evento);
+		} else if (kafkaProdutorMock != null) {
+			kafkaProdutorMock.enviarEventoCheckin(evento);
+		}
 	}
 }

@@ -9,8 +9,13 @@
 
       <div class="row mb-3">
         <div class="col-12 d-flex justify-content-between align-items-center">
-          <h1>Solicitações de Test Ride</h1>
-          <a href="/testrides/novo" class="btn btn-primary">Nova Solicitação</a>
+          <h1 th:text="#{testride.lista}">Solicitações de Test Ride</h1>
+          <a
+            href="/testrides/novo"
+            class="btn btn-primary"
+            th:text="#{testride.solicitar}"
+            >Nova Solicitação</a
+          >
         </div>
       </div>
 
@@ -31,12 +36,12 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Moto</th>
-                <th>Solicitante</th>
-                <th>Data</th>
-                <th>Status</th>
-                <th>Data Limite</th>
-                <th>Ações</th>
+                <th th:text="#{testride.moto}">Moto</th>
+                <th th:text="#{testride.usuario}">Solicitante</th>
+                <th th:text="#{testride.data_desejada}">Data</th>
+                <th th:text="#{testride.status}">Status</th>
+                <th th:text="#{testride.data_limite}">Data Limite</th>
+                <th th:text="#{menu.motos}">Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -47,7 +52,10 @@
                 ></td>
                 <td th:text="${ride.usuario.nome}"></td>
                 <td th:text="${ride.dataDesejada}"></td>
-                <td th:text="${ride.status}"></td>
+                <td
+                  th:with="statusKey = 'testride.status.' + ${ride.status.name()}"
+                  th:text="#{${statusKey}}"
+                ></td>
                 <td th:text="${ride.dataLimite}"></td>
                 <td>
                   <div

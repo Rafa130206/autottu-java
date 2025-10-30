@@ -18,7 +18,6 @@ import br.com.fiap.autottu.model.Usuario;
 import br.com.fiap.autottu.repository.MotoRepository;
 import br.com.fiap.autottu.repository.UsuarioRepository;
 import br.com.fiap.autottu.service.TestRideService;
-import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/testrides")
@@ -33,6 +32,7 @@ public class TestRideController {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
+	// LISTA: GET /testrides -> "testride/list"
 	@GetMapping
 	public ModelAndView listar() {
 		ModelAndView mv = new ModelAndView("testride/list");
@@ -41,11 +41,13 @@ public class TestRideController {
 		return mv;
 	}
 
+	// NOVO: GET /testrides/novo -> "testride/form"
 	@GetMapping("/novo")
 	public ModelAndView novo() {
 		return retornarFormulario(new TestRide());
 	}
 
+	// CRIAR: POST /testrides -> redireciona para /testrides
 	@PostMapping
 	public ModelAndView criar(@ModelAttribute("testride") TestRide testride,
 				 BindingResult binding,
@@ -82,6 +84,7 @@ public class TestRideController {
         return new ModelAndView("redirect:/testrides");
     }
 
+	// APROVAR: POST /testrides/{id}/aprovar -> redireciona para /testrides
 	@PostMapping("/{id}/aprovar")
 	public ModelAndView aprovar(@PathVariable Long id, RedirectAttributes ra) {
 		testRideService.aprovar(id);
@@ -89,6 +92,7 @@ public class TestRideController {
 		return new ModelAndView("redirect:/testrides");
 	}
 
+	// REJEITAR: POST /testrides/{id}/rejeitar -> redireciona para /testrides
 	@PostMapping("/{id}/rejeitar")
 	public ModelAndView rejeitar(@PathVariable Long id, RedirectAttributes ra) {
 		testRideService.rejeitar(id);
@@ -96,6 +100,7 @@ public class TestRideController {
 		return new ModelAndView("redirect:/testrides");
 	}
 
+	// CONCLUIR: POST /testrides/{id}/concluir -> redireciona para /testrides
 	@PostMapping("/{id}/concluir")
 	public ModelAndView concluir(@PathVariable Long id, RedirectAttributes ra) {
 		testRideService.concluir(id);
@@ -103,6 +108,7 @@ public class TestRideController {
 		return new ModelAndView("redirect:/testrides");
 	}
 
+	// EXCLUIR: POST /testrides/{id}/delete -> redireciona para /testrides
 	@PostMapping("/{id}/delete")
 	public ModelAndView excluir(@PathVariable Long id, RedirectAttributes ra) {
 		testRideService.excluir(id);

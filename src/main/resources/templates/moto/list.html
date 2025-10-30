@@ -8,7 +8,7 @@
       <div th:replace="~{fragmentos :: saudacoes(${usuarioLogado})}" />
 
       <div class="row">
-        <h1>Lista de Motos</h1>
+        <h1 th:text="#{moto.lista_titulo}">Lista de Motos</h1>
       </div>
 
       <!-- Mensagem de sucesso -->
@@ -18,7 +18,12 @@
 
       <div class="row">
         <div class="col-12">
-          <a href="/motos/novo" class="btn btn-primary mb-3">Nova Moto</a>
+          <a
+            href="/motos/novo"
+            class="btn btn-primary mb-3"
+            th:text="#{moto.nova_moto}"
+            >Nova Moto</a
+          >
         </div>
       </div>
 
@@ -27,12 +32,12 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Placa</th>
-                <th>Modelo</th>
-                <th>Marca</th>
-                <th>Status</th>
-                <th>Ações</th>
+                <th th:text="#{comum.id}">ID</th>
+                <th th:text="#{moto.placa}">Placa</th>
+                <th th:text="#{moto.modelo}">Modelo</th>
+                <th th:text="#{moto.marca}">Marca</th>
+                <th th:text="#{moto.status}">Status</th>
+                <th th:text="#{comum.acoes}">Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -46,11 +51,13 @@
                   <a
                     th:href="@{/motos/{id}(id=${moto.id})}"
                     class="btn btn-info btn-sm"
+                    th:text="#{moto.ver}"
                     >Ver</a
                   >
                   <a
                     th:href="@{/motos/{id}/editar(id=${moto.id})}"
                     class="btn btn-warning btn-sm"
+                    th:text="#{botao_editar}"
                     >Editar</a
                   >
                   <form
@@ -66,7 +73,8 @@
                     <button
                       type="submit"
                       class="btn btn-danger btn-sm"
-                      onclick="return confirm('Tem certeza que deseja excluir esta moto?')"
+                      th:onclick="'return confirm(\'' + #{moto.confirmacao_excluir} + '\')'"
+                      th:text="#{botao_excluir}"
                     >
                       Excluir
                     </button>

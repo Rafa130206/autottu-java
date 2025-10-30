@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class IntegrantesController {
 
+	// PÁGINA: GET /integrantes -> "integrantes"
 	@GetMapping("/integrantes")
 	public ModelAndView integrantes() {
 		ModelAndView mv = new ModelAndView("integrantes");

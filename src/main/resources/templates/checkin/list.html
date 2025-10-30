@@ -9,21 +9,21 @@
       <div th:replace="~{fragmentos :: saudacoes(${usuario})}" />
 
       <div class="row">
-        <h1>Lista de Check-ins</h1>
+        <h1 th:text="#{checkin.lista_titulo}">Lista de Check-ins</h1>
       </div>
       <div class="row">
         <div class="col-12">
           <table class="table table-hover">
             <thead>
               <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Moto</th>
-                <th scope="col">Slot</th>
-                <th scope="col">Usuário</th>
-                <th scope="col">Violada</th>
-                <th scope="col">Observação</th>
-                <th scope="col">Imagens</th>
-                <th scope="col">Ações</th>
+                <th scope="col" th:text="#{comum.id}">ID</th>
+                <th scope="col" th:text="#{checkin.moto}">Moto</th>
+                <th scope="col" th:text="#{checkin.slot}">Slot</th>
+                <th scope="col" th:text="#{checkin.usuario}">Usuário</th>
+                <th scope="col" th:text="#{checkin.violada}">Violada</th>
+                <th scope="col" th:text="#{checkin.observacao}">Observação</th>
+                <th scope="col" th:text="#{checkin.imagens}">Imagens</th>
+                <th scope="col" th:text="#{comum.acoes}">Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -39,8 +39,16 @@
                   th:text="${checkin.usuario != null ? checkin.usuario.nome : 'N/A'}"
                 ></td>
                 <td>
-                  <span th:if="${checkin.violada}">Sim</span>
-                  <span th:if="${!checkin.violada}">Não</span>
+                  <span
+                    th:if="${checkin.violada}"
+                    th:text="#{checkin.violada.sim}"
+                    >Sim</span
+                  >
+                  <span
+                    th:if="${!checkin.violada}"
+                    th:text="#{checkin.violada.nao}"
+                    >Não</span
+                  >
                 </td>
                 <td th:text="${checkin.observacao}"></td>
                 <td th:text="${checkin.imagens}"></td>
@@ -48,6 +56,7 @@
                   <a
                     th:href="@{/checkins/{id}/editar(id=${checkin.id})}"
                     class="btn btn-sm btn-warning"
+                    th:text="#{botao_editar}"
                     >Editar</a
                   >
                   <form
@@ -64,7 +73,8 @@
                     <button
                       type="submit"
                       class="btn btn-sm btn-danger"
-                      onclick="return confirm('Deseja excluir este check-in?')"
+                      th:onclick="'return confirm(\'' + #{checkin.confirmacao_excluir} + '\')'"
+                      th:text="#{botao_excluir}"
                     >
                       Excluir
                     </button>
@@ -76,10 +86,15 @@
         </div>
       </div>
       <div class="row">
-        <a href="/checkins/novo" class="btn btn-primary"
+        <a
+          href="/checkins/novo"
+          class="btn btn-primary"
+          th:text="#{checkin.cadastrar_novo}"
           >Cadastrar um Novo Check-in</a
         >
-        <a href="/menu" class="btn btn-link">Voltar para Home</a>
+        <a href="/menu" class="btn btn-link" th:text="#{checkin.voltar_home}"
+          >Voltar para Home</a
+        >
       </div>
     </div>
 

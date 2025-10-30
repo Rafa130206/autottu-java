@@ -8,10 +8,10 @@
     <main class="container py-5">
       <div class="row align-items-center g-5">
         <div class="col-12 col-lg-6">
-          <h1 class="display-5 fw-bold mb-4">
+          <h1 class="display-5 fw-bold mb-4" th:text="#{landing.titulo}">
             Automação inteligente para pátios de motos
           </h1>
-          <p class="lead">
+          <p class="lead" th:text="#{landing.descricao}">
             Imagine administrar mais de 100 filiais no Brasil e no México com
             centenas de motos em cada pátio, tudo de forma manual. Foi assim que
             a Mottu fez por muito tempo, enfrentando atrasos, erros e perdas. A
@@ -21,24 +21,43 @@
           </p>
           <ul class="list-unstyled lh-lg">
             <li>
-              <span class="fw-semibold">Localização precisa:</span> sensores
-              identificam presença e scanners leem o QR code de cada moto.
+              <span class="fw-semibold" th:text="#{landing.feature1.titulo}"
+                >Localização precisa:</span
+              >
+              <span th:text="#{landing.feature1.desc}"
+                >sensores identificam presença e scanners leem o QR code de cada
+                moto.</span
+              >
             </li>
             <li>
-              <span class="fw-semibold">Check-in completo:</span> geração de QR
-              code, inspeção de danos e registro imediato na entrada.
+              <span class="fw-semibold" th:text="#{landing.feature2.titulo}"
+                >Check-in completo:</span
+              >
+              <span th:text="#{landing.feature2.desc}"
+                >geração de QR code, inspeção de danos e registro imediato na
+                entrada.</span
+              >
             </li>
             <li>
-              <span class="fw-semibold">Monitoramento contínuo:</span> IA
-              captura imagens do pátio, detecta falhas e avisa desvios
-              automaticamente.
+              <span class="fw-semibold" th:text="#{landing.feature3.titulo}"
+                >Monitoramento contínuo:</span
+              >
+              <span th:text="#{landing.feature3.desc}"
+                >IA captura imagens do pátio, detecta falhas e avisa desvios
+                automaticamente.</span
+              >
             </li>
             <li>
-              <span class="fw-semibold">Operação organizada:</span> interface
-              intuitiva para consultas, atualizações e auditoria do estoque.
+              <span class="fw-semibold" th:text="#{landing.feature4.titulo}"
+                >Operação organizada:</span
+              >
+              <span th:text="#{landing.feature4.desc}"
+                >interface intuitiva para consultas, atualizações e auditoria do
+                estoque.</span
+              >
             </li>
           </ul>
-          <p class="mt-4">
+          <p class="mt-4" th:text="#{landing.conclusao}">
             Com a AutoTTU, seu pátio ganha automação, rastreabilidade e
             escalabilidade para crescer com segurança.
           </p>
@@ -47,18 +66,21 @@
               th:if="${usuarioLogado == null}"
               class="btn btn-primary btn-lg"
               href="/registrar"
+              th:text="#{landing.cta_registrar}"
               >Começar agora</a
             >
             <a
               th:if="${usuarioLogado == null}"
               class="btn btn-outline-primary btn-lg"
               href="/login"
+              th:text="#{landing.cta_login}"
               >Já tenho conta</a
             >
             <a
               th:if="${usuarioLogado != null}"
               class="btn btn-primary btn-lg"
               href="/menu"
+              th:text="#{landing.cta_menu}"
               >Ir para Menu</a
             >
           </div>
@@ -84,7 +106,10 @@
           <span
             th:text="${#calendars.format(#calendars.createNow(), 'yyyy')}"
           ></span>
-          AutoTTU. Todos os direitos reservados.</span
+          AutoTTU.
+          <span th:text="#{landing.footer}"
+            >Todos os direitos reservados.</span
+          ></span
         >
       </div>
     </footer>

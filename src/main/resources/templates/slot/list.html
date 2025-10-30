@@ -8,12 +8,17 @@
       <div th:replace="~{fragmentos :: saudacoes(${usuarioLogado})}" />
 
       <div class="row">
-        <h1>Lista de Slots</h1>
+        <h1 th:text="#{slot.lista_titulo}">Lista de Slots</h1>
       </div>
 
       <div class="row">
         <div class="col-12">
-          <a href="/slots/novo" class="btn btn-primary mb-3">Novo Slot</a>
+          <a
+            href="/slots/novo"
+            class="btn btn-primary mb-3"
+            th:text="#{slot.novo_slot}"
+            >Novo Slot</a
+          >
         </div>
       </div>
 
@@ -22,30 +27,40 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Ocupado</th>
-                <th>Moto</th>
-                <th>Ações</th>
+                <th th:text="#{slot.id}">ID</th>
+                <th th:text="#{slot.ocupado}">Ocupado</th>
+                <th th:text="#{slot.moto}">Moto</th>
+                <th th:text="#{comum.acoes}">Ações</th>
               </tr>
             </thead>
             <tbody>
               <tr th:each="slot : ${slots}">
                 <td th:text="${slot.id}"></td>
                 <td>
-                  <span th:if="${slot.ocupado}"> Ocupado </span>
-                  <span th:if="${!slot.ocupado}"> Livre </span>
+                  <span
+                    th:if="${slot.ocupado}"
+                    th:text="#{slot.ocupado_status}"
+                  >
+                    Ocupado
+                  </span>
+                  <span th:if="${!slot.ocupado}" th:text="#{slot.livre_status}">
+                    Livre
+                  </span>
                 </td>
                 <td>
                   <span
                     th:if="${slot.moto != null}"
                     th:text="${slot.moto.modelo + ' - ' + slot.moto.placa}"
                   ></span>
-                  <span th:if="${slot.moto == null}">Sem moto vinculada</span>
+                  <span th:if="${slot.moto == null}" th:text="#{slot.sem_moto}"
+                    >Sem moto vinculada</span
+                  >
                 </td>
                 <td>
                   <a
                     th:href="@{/slots/{id}/editar(id=${slot.id})}"
                     class="btn btn-warning btn-sm"
+                    th:text="#{botao_editar}"
                     >Editar</a
                   >
                   <form
@@ -61,7 +76,8 @@
                     <button
                       type="submit"
                       class="btn btn-danger btn-sm"
-                      onclick="return confirm('Deseja excluir este slot?')"
+                      th:onclick="'return confirm(\'' + #{slot.confirmacao_excluir} + '\')'"
+                      th:text="#{botao_excluir}"
                     >
                       Excluir
                     </button>

@@ -27,9 +27,16 @@
             method="post"
           >
             <div class="mb-3">
-              <label for="moto" class="form-label">Moto</label>
+              <label
+                for="moto"
+                class="form-label"
+                th:text="#{manutencao.moto.label}"
+                >Moto</label
+              >
               <select class="form-select" name="motoId" id="moto">
-                <option value="">Selecione uma moto</option>
+                <option value="" th:text="#{manutencao.moto.selecione}">
+                  Selecione uma moto
+                </option>
                 <option
                   th:each="moto : ${motos}"
                   th:value="${moto.id}"
@@ -43,7 +50,10 @@
             </div>
 
             <div class="mb-3">
-              <label for="quilometragemAtual" class="form-label"
+              <label
+                for="quilometragemAtual"
+                class="form-label"
+                th:text="#{manutencao.km_atual.label}"
                 >Quilometragem Atual</label
               >
               <input
@@ -51,7 +61,7 @@
                 class="form-control"
                 th:field="*{quilometragemAtual}"
                 id="quilometragemAtual"
-                placeholder="Km atual"
+                th:placeholder="#{manutencao.km_atual.placeholder}"
               />
               <div
                 th:if="${#fields.hasErrors('quilometragemAtual')}"
@@ -62,7 +72,10 @@
             </div>
 
             <div class="mb-3">
-              <label for="dataAgendada" class="form-label"
+              <label
+                for="dataAgendada"
+                class="form-label"
+                th:text="#{manutencao.data_agendada.label}"
                 >Data da Manutenção</label
               >
               <input
@@ -80,7 +93,12 @@
             </div>
 
             <div class="mb-3">
-              <label for="observacoes" class="form-label">Observações</label>
+              <label
+                for="observacoes"
+                class="form-label"
+                th:text="#{manutencao.observacoes.label}"
+                >Observações</label
+              >
               <textarea
                 class="form-control"
                 th:field="*{observacoes}"
@@ -95,8 +113,19 @@
                 name="_csrf"
                 th:value="${_csrf != null ? _csrf.token : ''}"
               />
-              <button type="submit" class="btn btn-primary">Agendar</button>
-              <a href="/manutencoes" class="btn btn-secondary">Cancelar</a>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                th:text="#{form.agendar}"
+              >
+                Agendar
+              </button>
+              <a
+                href="/manutencoes"
+                class="btn btn-secondary"
+                th:text="#{form.cancelar}"
+                >Cancelar</a
+              >
             </div>
           </form>
         </div>

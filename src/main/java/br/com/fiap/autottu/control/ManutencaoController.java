@@ -28,6 +28,7 @@ public class ManutencaoController {
 	@Autowired
 	private MotoRepository motoRepository;
 
+	// LISTA: GET /manutencoes -> "manutencao/list"
 	@GetMapping
 	public ModelAndView listar() {
 		ModelAndView mv = new ModelAndView("manutencao/list");
@@ -36,6 +37,7 @@ public class ManutencaoController {
 		return mv;
 	}
 
+	// NOVO: GET /manutencoes/novo -> "manutencao/form"
 	@GetMapping("/novo")
 	public ModelAndView novo() {
 		ModelAndView mv = new ModelAndView("manutencao/form");
@@ -45,6 +47,7 @@ public class ManutencaoController {
 		return mv;
 	}
 
+	// CRIAR: POST /manutencoes -> redireciona para /manutencoes
     @PostMapping
     public ModelAndView criar(@Valid @ModelAttribute("manutencao") Manutencao manutencao,
                      BindingResult binding,
@@ -73,6 +76,7 @@ public class ManutencaoController {
         return new ModelAndView("redirect:/manutencoes");
     }
 
+	// EXCLUIR: POST /manutencoes/{id}/delete -> redireciona para /manutencoes
     @PostMapping("/{id}/delete")
     public ModelAndView excluir(@PathVariable Long id, RedirectAttributes ra) {
         manutencaoService.excluir(id);

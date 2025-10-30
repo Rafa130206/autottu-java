@@ -19,53 +19,69 @@
           method="post"
         >
           <div class="mb-3">
-            <label for="placa" class="form-label">Placa:</label>
+            <label for="placa" class="form-label" th:text="#{moto.placa.label}"
+              >Placa:</label
+            >
             <input
               class="form-control"
               type="text"
               th:field="*{placa}"
               th:errorclass="is-invalid"
               id="placa"
-              placeholder="ABC1234"
+              th:placeholder="#{moto.placa.placeholder}"
             />
             <div class="invalid-feedback" th:errors="*{placa}"></div>
           </div>
 
           <div class="mb-3">
-            <label for="modelo" class="form-label">Modelo:</label>
+            <label
+              for="modelo"
+              class="form-label"
+              th:text="#{moto.modelo.label}"
+              >Modelo:</label
+            >
             <input
               class="form-control"
               type="text"
               th:field="*{modelo}"
               th:errorclass="is-invalid"
               id="modelo"
-              placeholder="Ex: CB 600"
+              th:placeholder="#{moto.modelo.placeholder}"
             />
             <div class="invalid-feedback" th:errors="*{modelo}"></div>
           </div>
 
           <div class="mb-3">
-            <label for="marca" class="form-label">Marca:</label>
+            <label for="marca" class="form-label" th:text="#{moto.marca.label}"
+              >Marca:</label
+            >
             <input
               class="form-control"
               type="text"
               th:field="*{marca}"
               th:errorclass="is-invalid"
               id="marca"
-              placeholder="Ex: Honda"
+              th:placeholder="#{moto.marca.placeholder}"
             />
             <div class="invalid-feedback" th:errors="*{marca}"></div>
           </div>
 
           <div class="mb-3">
-            <label for="status" class="form-label">Status:</label>
+            <label
+              for="status"
+              class="form-label"
+              th:text="#{moto.status.label}"
+              >Status:</label
+            >
             <select
               class="form-select"
               th:field="*{status}"
               th:errorclass="is-invalid"
               id="status"
             >
-              <option value="">Selecione o status</option>
+              <option value="" th:text="#{moto.status.selecione}">
+                Selecione o status
+              </option>
               <option
                 th:each="status : ${lista_status}"
                 th:value="${status}"
@@ -76,14 +92,19 @@
           </div>
 
           <div class="mb-3">
-            <label for="urlFoto" class="form-label">URL da Foto:</label>
+            <label
+              for="urlFoto"
+              class="form-label"
+              th:text="#{moto.url_foto.label}"
+              >URL da Foto:</label
+            >
             <input
               class="form-control"
               type="url"
               th:field="*{urlFoto}"
               th:errorclass="is-invalid"
               id="urlFoto"
-              placeholder="https://exemplo.com/foto.jpg"
+              th:placeholder="#{moto.url_foto.placeholder}"
             />
             <div class="invalid-feedback" th:errors="*{urlFoto}"></div>
           </div>
@@ -98,16 +119,25 @@
 
           <div class="mb-3">
             <button type="submit" class="btn btn-primary">
-              <span th:if="${moto.id == null}">Criar Moto</span>
-              <span th:if="${moto.id != null}">Atualizar Moto</span>
+              <span th:if="${moto.id == null}" th:text="#{moto.form.criar}"
+                >Criar Moto</span
+              >
+              <span th:if="${moto.id != null}" th:text="#{moto.form.atualizar}"
+                >Atualizar Moto</span
+              >
             </button>
-            <a href="/motos" class="btn btn-secondary">Cancelar</a>
+            <a
+              href="/motos"
+              class="btn btn-secondary"
+              th:text="#{form.cancelar}"
+              >Cancelar</a
+            >
           </div>
         </form>
       </div>
 
       <div class="row">
-        <a href="/motos">Voltar para Lista</a>
+        <a href="/motos" th:text="#{comum.voltar_lista}">Voltar para Lista</a>
       </div>
     </div>
 

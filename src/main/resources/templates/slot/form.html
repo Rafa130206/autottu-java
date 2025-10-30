@@ -18,7 +18,9 @@
           method="post"
         >
           <div class="mb-3" th:if="${slot.id != null}">
-            <label for="id" class="form-label">Identificador:</label>
+            <label for="id" class="form-label" th:text="#{slot.id.label}"
+              >Identificador:</label
+            >
             <input
               id="id"
               class="form-control"
@@ -35,14 +37,24 @@
               th:field="*{ocupado}"
               id="ocupado"
             />
-            <label for="ocupado" class="form-check-label"> Ocupado </label>
+            <label
+              for="ocupado"
+              class="form-check-label"
+              th:text="#{slot.ocupado.label}"
+            >
+              Ocupado
+            </label>
             <div class="text-danger" th:errors="*{ocupado}"></div>
           </div>
 
           <div class="mb-3">
-            <label for="moto" class="form-label">Moto:</label>
+            <label for="moto" class="form-label" th:text="#{slot.moto.label}"
+              >Moto:</label
+            >
             <select class="form-select" name="motoId" id="moto">
-              <option value="">Selecione uma moto</option>
+              <option value="" th:text="#{slot.moto.selecione}">
+                Selecione uma moto
+              </option>
               <option
                 th:each="moto : ${motos}"
                 th:value="${moto.id}"
@@ -69,10 +81,19 @@
 
           <div class="mb-3">
             <button type="submit" class="btn btn-primary">
-              <span th:if="${slot.id == null}">Criar Slot</span>
-              <span th:if="${slot.id != null}">Atualizar Slot</span>
+              <span th:if="${slot.id == null}" th:text="#{slot.form.criar}"
+                >Criar Slot</span
+              >
+              <span th:if="${slot.id != null}" th:text="#{slot.form.atualizar}"
+                >Atualizar Slot</span
+              >
             </button>
-            <a href="/slots" class="btn btn-secondary">Cancelar</a>
+            <a
+              href="/slots"
+              class="btn btn-secondary"
+              th:text="#{form.cancelar}"
+              >Cancelar</a
+            >
           </div>
         </form>
       </div>

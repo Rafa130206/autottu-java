@@ -10,10 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -32,6 +30,7 @@ public class UsuarioController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	// HOME: GET / -> home(index)
 	@GetMapping("/")
 	public ModelAndView home() {
 		ModelAndView mv = new ModelAndView("index");
@@ -39,6 +38,7 @@ public class UsuarioController {
 		return mv;
 	}
 
+	// LOGIN: GET /login -> "login" para login de usuário
 	@GetMapping("/login")
 	public ModelAndView login() {
 		ModelAndView mv = new ModelAndView("login");
@@ -46,11 +46,13 @@ public class UsuarioController {
 		return mv;
 	}
 
+	// REGISTRAR: GET /registrar -> "usuario/registrar" para cadastro de usuário
 	@GetMapping("/registrar")
 	public ModelAndView registrar() {
 		return retornarFormulario(new Usuario(), "Registrar Usuário");
 	}
 
+	// CRIAR: POST /registrar -> redireciona para /login quando finalizar o cadastro
 	@PostMapping("/registrar")
 	public ModelAndView criar(@Valid @ModelAttribute("usuario") Usuario usuario,
 				 BindingResult binding,
@@ -74,6 +76,7 @@ public class UsuarioController {
 		return new ModelAndView("redirect:/login");
 	}
 
+	// PERFIL: GET /perfil -> "usuario/perfil"
     @GetMapping("/perfil")
     public ModelAndView visualizarPerfil(RedirectAttributes ra) {
         Usuario logado = obterUsuarioLogado();
@@ -84,6 +87,7 @@ public class UsuarioController {
         return retornarFormularioPerfil(logado, "Atualizar Perfil");
     }
 
+	// ATUALIZAR PERFIL: POST /perfil -> redireciona para /perfil
     @PostMapping("/perfil")
     public ModelAndView atualizarPerfil(@Valid @ModelAttribute("usuario") Usuario usuario,
                         BindingResult binding,
@@ -119,6 +123,7 @@ public class UsuarioController {
         return new ModelAndView("redirect:/perfil");
     }
 
+	// MENU: GET /menu -> "menu"
 	@GetMapping("/menu")
 	public ModelAndView menu() {
 		ModelAndView mv = new ModelAndView("menu");
@@ -139,7 +144,7 @@ public class UsuarioController {
         mv.addObject("usuario", usuario);
         return mv;
     }
-
+//Faz a validação do usuário logado
     private Usuario obterUsuarioLogado() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated()) {

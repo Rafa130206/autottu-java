@@ -23,9 +23,16 @@
 
           <form th:object="${testride}" th:action="@{/testrides}" method="post">
             <div class="mb-3">
-              <label for="moto" class="form-label">Moto</label>
+              <label
+                for="moto"
+                class="form-label"
+                th:text="#{testride.moto.label}"
+                >Moto</label
+              >
               <select class="form-select" name="motoId" id="moto">
-                <option value="">Selecione uma moto</option>
+                <option value="" th:text="#{testride.moto.selecione}">
+                  Selecione uma moto
+                </option>
                 <option
                   th:each="moto : ${motos}"
                   th:value="${moto.id}"
@@ -39,9 +46,16 @@
             </div>
 
             <div class="mb-3">
-              <label for="usuario" class="form-label">Solicitante</label>
+              <label
+                for="usuario"
+                class="form-label"
+                th:text="#{testride.usuario.label}"
+                >Solicitante</label
+              >
               <select class="form-select" name="usuarioId" id="usuario">
-                <option value="">Selecione o usuário</option>
+                <option value="" th:text="#{testride.usuario.selecione}">
+                  Selecione o usuário
+                </option>
                 <option
                   th:each="u : ${usuarios}"
                   th:value="${u.id}"
@@ -55,7 +69,10 @@
             </div>
 
             <div class="mb-3">
-              <label for="proposito" class="form-label"
+              <label
+                for="proposito"
+                class="form-label"
+                th:text="#{testride.proposito.label}"
                 >Propósito do Teste</label
               >
               <input
@@ -63,7 +80,7 @@
                 class="form-control"
                 th:field="*{proposito}"
                 id="proposito"
-                placeholder="Motivo do test ride"
+                th:placeholder="#{testride.proposito.placeholder}"
               />
               <div
                 th:if="${#fields.hasErrors('proposito')}"
@@ -74,7 +91,12 @@
             </div>
 
             <div class="mb-3">
-              <label for="dataDesejada" class="form-label">Data Desejada</label>
+              <label
+                for="dataDesejada"
+                class="form-label"
+                th:text="#{testride.data_desejada.label}"
+                >Data Desejada</label
+              >
               <input
                 type="date"
                 class="form-control"
@@ -90,7 +112,12 @@
             </div>
 
             <div class="mb-3">
-              <label for="observacoes" class="form-label">Observações</label>
+              <label
+                for="observacoes"
+                class="form-label"
+                th:text="#{testride.observacoes.label}"
+                >Observações</label
+              >
               <textarea
                 class="form-control"
                 th:field="*{observacoes}"
@@ -105,10 +132,19 @@
                 name="_csrf"
                 th:value="${_csrf != null ? _csrf.token : ''}"
               />
-              <button type="submit" class="btn btn-primary">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                th:text="#{form.enviar_solicitacao}"
+              >
                 Enviar Solicitação
               </button>
-              <a href="/testrides" class="btn btn-secondary">Cancelar</a>
+              <a
+                href="/testrides"
+                class="btn btn-secondary"
+                th:text="#{form.cancelar}"
+                >Cancelar</a
+              >
             </div>
           </form>
         </div>

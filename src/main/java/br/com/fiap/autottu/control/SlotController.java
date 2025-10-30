@@ -31,6 +31,7 @@ public class SlotController {
     @Autowired
     private MotoRepository motoRepository;
 
+	// LISTA: GET /slots -> "slot/list"
     @GetMapping
     public ModelAndView listar() {
         ModelAndView mv = new ModelAndView("slot/list");
@@ -39,6 +40,7 @@ public class SlotController {
         return mv;
     }
 
+	// NOVO: GET /slots/novo -> "slot/form"
     @GetMapping("/novo")
     public ModelAndView novo() {
         ModelAndView mv = new ModelAndView("slot/form");
@@ -48,6 +50,7 @@ public class SlotController {
         return mv;
     }
 
+	// CRIAR: POST /slots -> redireciona para /slots
     @PostMapping
     @Transactional
     public ModelAndView criar(@Valid @ModelAttribute("slot") Slot slot,
@@ -69,6 +72,7 @@ public class SlotController {
         return new ModelAndView("redirect:/slots");
     }
 
+	// EDITAR: GET /slots/{id}/editar -> "slot/form"
     @GetMapping("/{id}/editar")
     public ModelAndView editar(@PathVariable Integer id) {
         Optional<Slot> slotOpt = slotRepository.findById(id);
@@ -83,6 +87,7 @@ public class SlotController {
         return mv;
     }
 
+	// ATUALIZAR: POST /slots/{id} com _method=put -> redireciona para /slots
     @PostMapping("/{id}")
     @Transactional
     public ModelAndView atualizar(@PathVariable Integer id,
@@ -111,6 +116,7 @@ public class SlotController {
         return new ModelAndView("redirect:/slots");
     }
 
+	// EXCLUIR: POST /slots/{id}/delete -> redireciona para /slots
     @PostMapping("/{id}/delete")
     public ModelAndView deletar(@PathVariable Integer id) {
         slotRepository.findById(id).ifPresent(slot -> {
@@ -125,7 +131,7 @@ public class SlotController {
         });
         return new ModelAndView("redirect:/slots");
     }
-
+//Organiza as motos para a listagem
     private List<Moto> buscarMotosOrdenadas() {
         return motoRepository.findAll()
                 .stream()
@@ -139,7 +145,7 @@ public class SlotController {
         }
         return motoRepository.findById(motoId).orElse(null);
     }
-
+//Verifica se a moto já está vinculada a outro slot
     private boolean resolverConflitoMoto(Slot slotDestino, Moto novaMoto, BindingResult binding) {
         if (novaMoto == null) {
             return true;
@@ -155,7 +161,7 @@ public class SlotController {
 
         return true;
     }
-
+//Verifica se o slot está ocupado e se a moto está selecionada
     private boolean validarRegras(Slot slot, Moto motoSelecionada, BindingResult binding) {
         boolean ocupacaoMarcada = Boolean.TRUE.equals(slot.getOcupado());
 

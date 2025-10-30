@@ -24,9 +24,16 @@
               value="put"
             />
             <div class="mb-3">
-              <label for="motoId" class="form-label">Moto</label>
+              <label
+                for="motoId"
+                class="form-label"
+                th:text="#{checkin.moto.label}"
+                >Moto</label
+              >
               <select class="form-select" th:field="*{motoId}" id="motoId">
-                <option value="">Selecione uma moto</option>
+                <option value="" th:text="#{checkin.moto.selecione}">
+                  Selecione uma moto
+                </option>
                 <option
                   th:each="moto : ${motosElegiveis}"
                   th:value="${moto.id}"
@@ -39,13 +46,20 @@
             </div>
 
             <div class="mb-3">
-              <label for="slotId" class="form-label">Slot</label>
+              <label
+                for="slotId"
+                class="form-label"
+                th:text="#{checkin.slot.label}"
+                >Slot</label
+              >
               <select class="form-select" th:field="*{slotId}" id="slotId">
-                <option value="">Selecione um slot</option>
+                <option value="" th:text="#{checkin.slot.selecione}">
+                  Selecione um slot
+                </option>
                 <option
                   th:each="slot : ${slotsLivres}"
                   th:value="${slot.id}"
-                  th:text="${'Slot ' + slot.id}"
+                  th:text="#{checkin.slot.opcao} + ' ' + ${slot.id}"
                 ></option>
               </select>
               <div th:if="${#fields.hasErrors('slotId')}" class="text-danger">
@@ -54,7 +68,10 @@
             </div>
 
             <div class="mb-3">
-              <label for="usuarioId" class="form-label"
+              <label
+                for="usuarioId"
+                class="form-label"
+                th:text="#{checkin.usuario.label}"
                 >Usuário responsável</label
               >
               <select
@@ -62,7 +79,9 @@
                 th:field="*{usuarioId}"
                 id="usuarioId"
               >
-                <option value="">Selecione o usuário</option>
+                <option value="" th:text="#{checkin.usuario.selecione}">
+                  Selecione o usuário
+                </option>
                 <option
                   th:each="usuario : ${usuarios}"
                   th:value="${usuario.id}"
@@ -84,13 +103,22 @@
                 th:field="*{violada}"
                 id="violada"
               />
-              <label class="form-check-label" for="violada">
+              <label
+                class="form-check-label"
+                for="violada"
+                th:text="#{checkin.violada.label}"
+              >
                 Placa violada?
               </label>
             </div>
 
             <div class="mb-3">
-              <label for="observacao" class="form-label">Observação</label>
+              <label
+                for="observacao"
+                class="form-label"
+                th:text="#{checkin.observacao.label}"
+                >Observação</label
+              >
               <textarea
                 class="form-control"
                 th:field="*{observacao}"
@@ -100,7 +128,12 @@
             </div>
 
             <div class="mb-3">
-              <label for="imagens" class="form-label">Imagens (URLs)</label>
+              <label
+                for="imagens"
+                class="form-label"
+                th:text="#{checkin.imagens.label}"
+                >Imagens (URLs)</label
+              >
               <input
                 class="form-control"
                 type="text"
@@ -116,10 +149,23 @@
                 th:value="${_csrf != null ? _csrf.token : ''}"
               />
               <button type="submit" class="btn btn-primary">
-                <span th:if="${checkinId} == null">Criar Check-in</span>
-                <span th:if="${checkinId} != null">Atualizar Check-in</span>
+                <span
+                  th:if="${checkinId} == null"
+                  th:text="#{checkin.form.criar}"
+                  >Criar Check-in</span
+                >
+                <span
+                  th:if="${checkinId} != null"
+                  th:text="#{checkin.form.atualizar}"
+                  >Atualizar Check-in</span
+                >
               </button>
-              <a href="/checkins" class="btn btn-secondary">Cancelar</a>
+              <a
+                href="/checkins"
+                class="btn btn-secondary"
+                th:text="#{form.cancelar}"
+                >Cancelar</a
+              >
             </div>
           </form>
         </div>

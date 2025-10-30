@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.fiap.autottu.messaging.dto.TestRideNotificacaoDTO;
+import br.com.fiap.autottu.messaging.producer.INotificacaoProdutor;
 import br.com.fiap.autottu.model.TestRide;
 import br.com.fiap.autottu.model.TestRideStatus;
 import br.com.fiap.autottu.repository.CheckinRepository;
@@ -26,6 +28,9 @@ public class TestRideService {
 	@Autowired
 	private CheckinRepository checkinRepository;
 
+	@Autowired
+	private INotificacaoProdutor notificacaoProdutor;
+
 	public List<TestRide> listar() {
 		List<TestRide> rides = testRideRepository.findAll();
 		rides.forEach(this::atualizarStatusSeExpirado);
@@ -42,7 +47,24 @@ public class TestRideService {
 
 	@Transactional
 	public void aprovar(Long id) {
-		alterarStatus(id, TestRideStatus.APROVADO);
+		Optional<TestRide> opt = testRideRepository.findById(id);
+		opt.ifPresent(ride -> {
+			ride.setStatus(TestRideStatus.APROVADO);
+			testRideRepository.save(ride);
+			
+			// Enviar notificação via RabbitMQ
+			TestRideNotificacaoDTO notificacao = new TestRideNotificacaoDTO(
+				ride.getId(),
+				ride.getUsuario().getNome(),
+				ride.getUsuario().getEmail(),
+				ride.getMoto().getModelo(),
+				ride.getDataDesejada(),
+				TestRideStatus.APROVADO.toString(),
+				ride.getProposito()
+			);
+			
+			notificacaoProdutor.enviarNotificacaoTestRideAprovado(notificacao);
+		});
 	}
 
 	@Transactional

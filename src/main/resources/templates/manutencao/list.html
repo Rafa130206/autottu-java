@@ -7,8 +7,11 @@
     <div class="container mt-4">
       <div class="row">
         <div class="col-12">
-          <h1>Manutenções</h1>
-          <a href="/manutencoes/novo" class="btn btn-primary mb-3"
+          <h1 th:text="#{manutencao.lista_titulo}">Manutenções</h1>
+          <a
+            href="/manutencoes/novo"
+            class="btn btn-primary mb-3"
+            th:text="#{manutencao.agendar}"
             >Agendar Manutenção</a
           >
         </div>
@@ -30,13 +33,17 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Moto</th>
-                <th>Data Agendada</th>
-                <th>Próxima Revisão (km)</th>
-                <th>Próxima Revisão (data)</th>
-                <th>Status</th>
-                <th>Ações</th>
+                <th th:text="#{manutencao.id}">ID</th>
+                <th th:text="#{manutencao.moto}">Moto</th>
+                <th th:text="#{manutencao.data_agendada}">Data Agendada</th>
+                <th th:text="#{manutencao.proxima_revisao_km}">
+                  Próxima Revisão (km)
+                </th>
+                <th th:text="#{manutencao.proxima_revisao_data}">
+                  Próxima Revisão (data)
+                </th>
+                <th th:text="#{manutencao.status}">Status</th>
+                <th th:text="#{comum.acoes}">Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -63,7 +70,8 @@
                     <button
                       type="submit"
                       class="btn btn-danger btn-sm"
-                      onclick="return confirm('Remover agendamento?')"
+                      th:onclick="'return confirm(\'' + #{manutencao.confirmacao_excluir} + '\')'"
+                      th:text="#{botao_excluir}"
                     >
                       Excluir
                     </button>

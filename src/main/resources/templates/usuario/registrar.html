@@ -2,12 +2,67 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
   <head th:replace="~{fragmentos :: cabecalho(${pageTitle})}" />
   <body>
-    <div class="container">
-      <div class="row">
-        <h1 th:text="${pageTitle}">Registrar Usuário</h1>
+    <!-- Se usuário está logado, mostrar navegação completa -->
+    <div
+      th:if="${usuarioLogado != null}"
+      th:replace="~{fragmentos :: navegacao(${usuarioLogado})}"
+    ></div>
+
+    <!-- Se não está logado, mostrar apenas seletor de idioma -->
+    <div
+      th:if="${usuarioLogado == null}"
+      class="container-fluid bg-light border-bottom"
+    >
+      <div class="container py-2">
+        <div class="d-flex justify-content-between align-items-center">
+          <a href="/" class="text-decoration-none">
+            <h5 class="mb-0">AutoTTU</h5>
+          </a>
+          <div class="dropdown">
+            <button
+              class="btn btn-sm btn-outline-secondary dropdown-toggle"
+              type="button"
+              id="languageDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <span th:text="${#locale.language == 'pt' ? '🇧🇷' : '🇺🇸'}"
+                >🌐</span
+              >
+            </button>
+            <ul
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="languageDropdown"
+            >
+              <li>
+                <a class="dropdown-item" th:href="@{/registrar(lang='pt')}"
+                  >🇧🇷</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" th:href="@{/registrar(lang='en')}"
+                  >🇺🇸</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <div class="container mt-4">
       <div class="row">
         <div class="col-12">
+          <h1 th:if="${usuario.id == null}" th:text="#{registro.titulo}">
+            Registrar Usuário
+          </h1>
+          <h1 th:if="${usuario.id != null}" th:text="#{usuario.perfil}">
+            Perfil do Usuário
+          </h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-8 col-lg-6">
           <div th:if="${msgErro}" class="alert alert-danger">
             <span th:text="${msgErro}"></span>
           </div>
@@ -27,13 +82,15 @@
             />
 
             <div class="mb-3">
-              <label for="nome" class="form-label">Nome</label>
+              <label for="nome" class="form-label" th:text="#{usuario.nome}"
+                >Nome</label
+              >
               <input
                 type="text"
                 class="form-control"
                 th:field="*{nome}"
                 id="nome"
-                placeholder="Nome completo"
+                th:placeholder="#{registro.nome_placeholder}"
               />
               <div th:if="${#fields.hasErrors('nome')}" class="text-danger">
                 <span th:errors="*{nome}"></span>
@@ -41,13 +98,15 @@
             </div>
 
             <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
+              <label for="email" class="form-label" th:text="#{usuario.email}"
+                >Email</label
+              >
               <input
                 type="email"
                 class="form-control"
                 th:field="*{email}"
                 id="email"
-                placeholder="email@exemplo.com"
+                th:placeholder="#{registro.email_placeholder}"
               />
               <div th:if="${#fields.hasErrors('email')}" class="text-danger">
                 <span th:errors="*{email}"></span>
@@ -55,13 +114,18 @@
             </div>
 
             <div class="mb-3">
-              <label for="telefone" class="form-label">Telefone</label>
+              <label
+                for="telefone"
+                class="form-label"
+                th:text="#{usuario.telefone}"
+                >Telefone</label
+              >
               <input
                 type="text"
                 class="form-control"
                 th:field="*{telefone}"
                 id="telefone"
-                placeholder="(00) 00000-0000"
+                th:placeholder="#{registro.telefone_placeholder}"
               />
               <div th:if="${#fields.hasErrors('telefone')}" class="text-danger">
                 <span th:errors="*{telefone}"></span>
@@ -69,13 +133,18 @@
             </div>
 
             <div class="mb-3">
-              <label for="username" class="form-label">Usuário</label>
+              <label
+                for="username"
+                class="form-label"
+                th:text="#{usuario.username}"
+                >Usuário</label
+              >
               <input
                 type="text"
                 class="form-control"
                 th:field="*{username}"
                 id="username"
-                placeholder="Nome de usuário"
+                th:placeholder="#{registro.username_placeholder}"
               />
               <div th:if="${#fields.hasErrors('username')}" class="text-danger">
                 <span th:errors="*{username}"></span>
@@ -83,13 +152,15 @@
             </div>
 
             <div class="mb-3">
-              <label for="senha" class="form-label">Senha</label>
+              <label for="senha" class="form-label" th:text="#{usuario.senha}"
+                >Senha</label
+              >
               <input
                 type="password"
                 class="form-control"
                 th:field="*{senha}"
                 id="senha"
-                placeholder="Senha"
+                th:placeholder="#{registro.senha_placeholder}"
               />
               <div th:if="${#fields.hasErrors('senha')}" class="text-danger">
                 <span th:errors="*{senha}"></span>
@@ -100,10 +171,31 @@
 
             <div class="mb-3">
               <button type="submit" class="btn btn-primary">
-                <span th:if="${usuario.id == null}">Registrar</span>
-                <span th:if="${usuario.id != null}">Atualizar</span>
+                <span
+                  th:if="${usuario.id == null}"
+                  th:text="#{registro.botao_registrar}"
+                  >Registrar</span
+                >
+                <span
+                  th:if="${usuario.id != null}"
+                  th:text="#{registro.botao_atualizar}"
+                  >Atualizar</span
+                >
               </button>
-              <a href="/login" class="btn btn-link">Já possui conta? Entrar</a>
+              <a
+                th:if="${usuarioLogado == null}"
+                href="/login"
+                class="btn btn-link"
+                th:text="#{registro.link_login}"
+                >Já possui conta? Entrar</a
+              >
+              <a
+                th:if="${usuarioLogado != null}"
+                href="/menu"
+                class="btn btn-link"
+                th:text="#{botao_voltar}"
+                >Voltar</a
+              >
             </div>
           </form>
         </div>
@@ -111,8 +203,8 @@
     </div>
 
     <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
       crossorigin="anonymous"
     ></script>
   </body>

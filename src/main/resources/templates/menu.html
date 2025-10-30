@@ -6,27 +6,9 @@
 
     <main class="container py-5">
       <div class="row mb-4">
-        <div class="col-12 d-flex justify-content-between align-items-center">
-          <h1 class="display-6">
-            <span
-              th:text="${usuarioLogado != null ? 'Bem-vindo, ' + usuarioLogado.nome + '!' : 'Bem-vindo!'}"
-            ></span>
-          </h1>
-          <div class="d-flex gap-2" th:if="${usuarioLogado != null}">
-            <a href="/perfil" class="btn btn-outline-primary btn-sm"
-              >Meu Perfil</a
-            >
-            <form th:action="@{/logout}" method="post">
-              <input
-                type="hidden"
-                name="_csrf"
-                th:value="${_csrf != null ? _csrf.token : ''}"
-              />
-              <button type="submit" class="btn btn-outline-danger btn-sm">
-                Sair
-              </button>
-            </form>
-          </div>
+        <div class="col-12">
+          <h1 class="display-6" th:text="#{bem_vindo}">Bem-vindo</h1>
+          <div th:replace="~{fragmentos :: saudacoes(${usuarioLogado})}"></div>
         </div>
       </div>
 
@@ -34,11 +16,16 @@
         <div class="col-12 col-md-6 col-xl-4">
           <div class="card h-100 shadow-sm">
             <div class="card-body">
-              <h5 class="card-title">Motos</h5>
-              <p class="card-text">
+              <h5 class="card-title" th:text="#{menu.motos}">Motos</h5>
+              <p class="card-text" th:text="#{menu.motos.descricao}">
                 Cadastre e gerencie o inventário de motos disponíveis.
               </p>
-              <a href="/motos" class="btn btn-primary">Ir para Motos</a>
+              <a
+                href="/motos"
+                class="btn btn-primary"
+                th:text="#{botao_ir_para} + ' ' + #{menu.motos}"
+                >Ir para Motos</a
+              >
             </div>
           </div>
         </div>
@@ -46,11 +33,16 @@
         <div class="col-12 col-md-6 col-xl-4">
           <div class="card h-100 shadow-sm">
             <div class="card-body">
-              <h5 class="card-title">Check-ins</h5>
-              <p class="card-text">
+              <h5 class="card-title" th:text="#{menu.checkins}">Check-ins</h5>
+              <p class="card-text" th:text="#{menu.checkins.descricao}">
                 Controle entradas e saídas, fotos e dados das motos nos slots.
               </p>
-              <a href="/checkins" class="btn btn-primary">Ir para Check-ins</a>
+              <a
+                href="/checkins"
+                class="btn btn-primary"
+                th:text="#{botao_ir_para} + ' ' + #{menu.checkins}"
+                >Ir para Check-ins</a
+              >
             </div>
           </div>
         </div>
@@ -58,11 +50,16 @@
         <div class="col-12 col-md-6 col-xl-4">
           <div class="card h-100 shadow-sm">
             <div class="card-body">
-              <h5 class="card-title">Manutenções</h5>
-              <p class="card-text">
+              <h5 class="card-title" th:text="#{menu.manutencoes}">
+                Manutenções
+              </h5>
+              <p class="card-text" th:text="#{menu.manutencoes.descricao}">
                 Agende revisões, acompanhe status e histórico das motos.
               </p>
-              <a href="/manutencoes" class="btn btn-primary"
+              <a
+                href="/manutencoes"
+                class="btn btn-primary"
+                th:text="#{botao_ir_para} + ' ' + #{menu.manutencoes}"
                 >Ir para Manutenções</a
               >
             </div>
@@ -72,12 +69,15 @@
         <div class="col-12 col-md-6 col-xl-4">
           <div class="card h-100 shadow-sm">
             <div class="card-body">
-              <h5 class="card-title">Test Rides</h5>
-              <p class="card-text">
+              <h5 class="card-title" th:text="#{menu.testrides}">Test Rides</h5>
+              <p class="card-text" th:text="#{menu.testrides.descricao}">
                 Aprove e acompanhe solicitações de test ride com feedback
                 detalhado.
               </p>
-              <a href="/testrides" class="btn btn-primary"
+              <a
+                href="/testrides"
+                class="btn btn-primary"
+                th:text="#{botao_ir_para} + ' ' + #{menu.testrides}"
                 >Ir para Test Rides</a
               >
             </div>
@@ -87,11 +87,16 @@
         <div class="col-12 col-md-6 col-xl-4">
           <div class="card h-100 shadow-sm">
             <div class="card-body">
-              <h5 class="card-title">Slots</h5>
-              <p class="card-text">
+              <h5 class="card-title" th:text="#{menu.slots}">Slots</h5>
+              <p class="card-text" th:text="#{menu.slots.descricao}">
                 Organize e monitore vagas disponíveis, ocupadas ou reservadas.
               </p>
-              <a href="/slots" class="btn btn-primary">Ir para Slots</a>
+              <a
+                href="/slots"
+                class="btn btn-primary"
+                th:text="#{botao_ir_para} + ' ' + #{menu.slots}"
+                >Ir para Slots</a
+              >
             </div>
           </div>
         </div>
@@ -102,11 +107,16 @@
         >
           <div class="card h-100 shadow-sm">
             <div class="card-body">
-              <h5 class="card-title">Integrantes</h5>
+              <h5 class="card-title" th:text="#{menu.integrantes}">
+                Integrantes
+              </h5>
               <p class="card-text">
                 Acesse informações da equipe e mantenha os contatos atualizados.
               </p>
-              <a href="/integrantes" class="btn btn-primary"
+              <a
+                href="/integrantes"
+                class="btn btn-primary"
+                th:text="'Ir para ' + #{menu.integrantes}"
                 >Ir para Integrantes</a
               >
             </div>
