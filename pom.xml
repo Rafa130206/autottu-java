@@ -61,11 +61,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Banco em memória H2 (runtime) -->
+        <!-- Driver Oracle JDBC -->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc11</artifactId>
+            <version>23.4.0.24.05</version>
         </dependency>
 
         <!-- Spring Boot Test (framework de testes) -->
