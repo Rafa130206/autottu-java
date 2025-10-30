@@ -3,7 +3,7 @@
 ![Java](https://img.shields.io/badge/Java-17-orange?logo=java)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.4-brightgreen?logo=spring)
 ![Maven](https://img.shields.io/badge/Maven-3.9+-blue?logo=apache-maven)
-![H2](https://img.shields.io/badge/Database-H2-blue?logo=h2)
+![Oracle](https://img.shields.io/badge/Database-Oracle-red?logo=oracle)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
 Aplicação **Spring Boot** completa para gestão inteligente de motos, com recursos avançados de **mensageria**, **event streaming**, **inteligência artificial**, **monitoramento** e **cache**. Interface moderna com **Thymeleaf**, autenticação via **Spring Security** e suporte a **internacionalização** (PT/EN).
@@ -59,9 +59,6 @@ mvn clean install
 # 4. Subir a aplicação (porta 8080)
 mvn spring-boot:run
 ```
-
-> 💡 **Banco em memória**: `jdbc:h2:mem:testdb` (usuário `DB_USER`, senha `DB_PASS`).  
-> Console H2 disponível em: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
 
 ### Modo Mock (Sem RabbitMQ/Kafka)
 
@@ -562,6 +559,21 @@ src/test/java/br/com/fiap/autottu/
 ✅ **Segurança** com Spring Security  
 ✅ **Migrations** com Flyway  
 ✅ **Código limpo** e documentado
+
+---
+
+## 🏛️ Procedures do Banco Oracle via Aplicação
+
+A aplicação está integrada ao **banco de dados Oracle**, utilizando **procedures PL/SQL** para processar e retornar informações relacionadas aos **check-ins**.
+
+Essas procedures podem ser acessadas diretamente pela aplicação através das seguintes rotas:
+
+| Endpoint | Descrição |
+|-----------|------------|
+| [`http://localhost:8080/oracle/checkins-json`](http://localhost:8080/oracle/checkins-json) | Retorna o resultado da procedure em formato **JSON**, exibindo os dados de check-ins registrados. |
+| [`http://localhost:8080/oracle/relatorio-checkins`](http://localhost:8080/oracle/relatorio-checkins) | Gera um **relatório detalhado** dos check-ins com base na execução da procedure PL/SQL. |
+
+Essas rotas realizam chamadas às procedures do Oracle configuradas na camada de persistência da aplicação, permitindo visualizar e validar os dados processados diretamente pelo banco.
 
 ---
 
