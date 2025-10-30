@@ -1,14 +1,6 @@
 package br.com.fiap.autottu.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,10 +9,11 @@ import jakarta.validation.constraints.Size;
 @Table(name = "AUT_T_MOTO")
 public class Moto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_moto")
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "moto_seq")
+	@SequenceGenerator(name = "moto_seq", sequenceName = "SEQ_AUT_T_MOTO", allocationSize = 1)
+	@Column(name = "id_moto")
+	private Integer id;
 
 	@NotBlank(message = "A placa é obrigatória")
 	@Size(min = 7, max = 7, message = "A placa deve ter exatamente 7 caracteres")

@@ -3,24 +3,15 @@ package br.com.fiap.autottu.model;
 import java.util.Date;
 
 import br.com.fiap.autottu.shared.converter.YesNoBooleanConverter;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "AUT_T_CHECKIN")
 public class Checkin {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "checkin_seq")
+	@SequenceGenerator(name = "checkin_seq", sequenceName = "SEQ_AUT_T_CHECKIN", allocationSize = 1)
 	@Column(name = "id_checkin")
 	private Integer id;
 

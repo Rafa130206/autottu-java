@@ -2,8 +2,7 @@ package br.com.fiap.autottu.model;
 
 public enum EnumStatusMoto {
 
-	DISPONIVEL("Disponível"), OCUPADA("Ocupada"), 
-	MANUTENCAO("Manutenção"), INDISPONIVEL("Indisponível");
+	OK("ok"), VIOLADA("violada");
 
 	private final String descricao;
 

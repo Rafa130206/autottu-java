@@ -1,24 +1,17 @@
 package br.com.fiap.autottu.model;
 
 import br.com.fiap.autottu.shared.converter.YesNoBooleanConverter;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "AUT_T_SLOT")
 public class Slot {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_slot")
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "slot_seq")
+	@SequenceGenerator(name = "slot_seq", sequenceName = "SEQ_AUT_T_SLOT", allocationSize = 1)
+	@Column(name = "id_slot")
+	private Integer id;
 
     @Convert(converter = YesNoBooleanConverter.class)
     private Boolean ocupado;
