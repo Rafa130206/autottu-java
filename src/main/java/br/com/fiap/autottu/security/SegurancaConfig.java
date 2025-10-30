@@ -22,7 +22,7 @@ public class SegurancaConfig {
 		http
 			.userDetailsService(usuarioDetailsService)
 			.authorizeHttpRequests(auth -> auth
-			.requestMatchers("/integrantes").hasRole("ADMIN")
+			.requestMatchers("/integrantes", "/telemetria").hasRole("ADMIN")
 			.requestMatchers("/menu", "/motos/**", "/checkins/**",
 							 "/manutencoes/**", "/testrides/**", "/slots/**")
 				.authenticated()

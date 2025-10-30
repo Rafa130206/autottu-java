@@ -105,6 +105,30 @@
           class="col-12 col-md-6 col-xl-4"
           th:if="${usuarioLogado != null and usuarioLogado.perfil != null and usuarioLogado.perfil.name() == 'ADMIN'}"
         >
+          <div class="card h-100 shadow-sm border-info">
+            <div class="card-body">
+              <h5 class="card-title text-info">
+                <i class="bi bi-bar-chart-line"></i>
+                <span th:text="#{menu.telemetria}">Telemetria</span>
+              </h5>
+              <p class="card-text" th:text="#{menu.telemetria.descricao}">
+                Monitore métricas, uso de CPU, memória e status da aplicação em
+                tempo real.
+              </p>
+              <a
+                href="/telemetria"
+                class="btn btn-info text-white"
+                th:text="#{botao_ir_para} + ' ' + #{menu.telemetria}"
+                >Ir para Telemetria</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-12 col-md-6 col-xl-4"
+          th:if="${usuarioLogado != null and usuarioLogado.perfil != null and usuarioLogado.perfil.name() == 'ADMIN'}"
+        >
           <div class="card h-100 shadow-sm">
             <div class="card-body">
               <h5 class="card-title" th:text="#{menu.integrantes}">
@@ -116,7 +140,7 @@
               <a
                 href="/integrantes"
                 class="btn btn-primary"
-                th:text="'Ir para ' + #{menu.integrantes}"
+                th:text="#{botao_ir_para} + ' ' + #{menu.integrantes}"
                 >Ir para Integrantes</a
               >
             </div>
